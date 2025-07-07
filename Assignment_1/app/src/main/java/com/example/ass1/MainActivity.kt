@@ -22,7 +22,102 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Ass1Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    NumberPadApp(
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun NumberPadApp(modifier: Modifier = Modifier) {
+    var input by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .background(Color.LightGray),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("VangtiChai")
+        }
+
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .background(Color(0xFFE0E0E0)),
+            contentAlignment = Alignment.CenterEnd
+        ) {
+            Text(
+                text = input,
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(end = 16.dp)
+            )
+        }
+
+
+        Row(modifier = Modifier.fillMaxSize()) {
+
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .background(Color(0xFFB0BEC5)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Left Panel")
+            }
+
+
+            Column(
+                modifier = Modifier
+                    .weight(2f)
+                    .fillMaxHeight()
+                    .padding(start = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                val buttonLabels = listOf(
+                    listOf("1", "2", "3"),
+                    listOf("4", "5", "6"),
+                    listOf("7", "8", "9"),
+                    listOf("0", "Reset")
+                )
+
+                buttonLabels.forEach { row ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        row.forEach { label ->
+                            Button(
+                                onClick = {
+                                    input = when (label) {
+                                        "Reset" -> ""
+                                        else -> input + label
+                                    }
+                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(60.dp)
+                            ) {
+                                Text(label)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -30,11 +125,10 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Ass1Theme {
-
+        NumberPadApp()
     }
 }
