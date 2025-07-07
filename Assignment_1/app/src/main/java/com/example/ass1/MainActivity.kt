@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -34,7 +35,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NumberPadApp(modifier: Modifier = Modifier) {
-    var input by remember { mutableStateOf("") }
+    var input by remember{ mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -72,15 +73,7 @@ fun NumberPadApp(modifier: Modifier = Modifier) {
         Row(modifier = Modifier.fillMaxSize()) {
 
 
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .background(Color(0xFFB0BEC5)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Left Panel")
-            }
+            updateLeftPanel(amountStr = input)
 
 
             Column(
@@ -112,7 +105,7 @@ fun NumberPadApp(modifier: Modifier = Modifier) {
                                 },
                                 modifier = Modifier
                                     .weight(1f)
-                                    .height(60.dp)
+                                    .height(50.dp)
                             ) {
                                 Text(label)
                             }
@@ -120,6 +113,40 @@ fun NumberPadApp(modifier: Modifier = Modifier) {
                     }
                 }
             }
+        }
+    }
+}
+
+fun calculateChange(amount: Int): Map<Int, Int> {
+    val notesAvailable = listOf(500, 100, 50, 20, 10, 5, 2, 1)
+    val result = mutableMapOf<Int, Int>()
+    var remainingAmount = amount
+    
+    for (note in notesAvailable) {
+        val count = remainingAmount / note
+        if (count > 0) {
+            result[note] = count
+            remainingAmount -= count * note
+        }
+    }
+
+    return result
+}
+
+@Composable
+fun updateLeftPanel(amountStr: String) {
+    val amount = amountStr.toIntOrNull() ?: 0
+    val change = calculateChange(amount)
+
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(8.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        listOf(500, 100, 50, 20, 10, 5, 2, 1).forEach { note ->
+            val count = change[note] ?: 0
+            Text("$note: $count")
         }
     }
 }
