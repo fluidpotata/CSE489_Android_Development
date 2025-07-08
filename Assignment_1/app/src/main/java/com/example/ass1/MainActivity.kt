@@ -24,7 +24,7 @@ import com.example.ass1.ui.theme.Ass1Theme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContent {
             Ass1Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
