@@ -51,24 +51,28 @@ fun NumberPadApp(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp)
-                .background(Color.LightGray),
+                .height(60.dp)
+                .background(Color(0xFF0D47A1)),
             contentAlignment = Alignment.Center
         ) {
-            Text("VangtiChai")
+            Text(
+                "VangtiChai",
+                color = Color.White,
+                style = MaterialTheme.typography.headlineMedium
+            )
         }
-
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
-                .background(Color(0xFFE0E0E0)),
+                .height(70.dp)
+                .background(Color(0xFFBBDEFB)),
             contentAlignment = Alignment.CenterEnd
         ) {
             Text(
-                text = input,
-                style = MaterialTheme.typography.headlineMedium,
+                text = input.ifEmpty { "0" },
+                style = MaterialTheme.typography.headlineLarge,
+                color = Color.Black,
                 modifier = Modifier.padding(end = 16.dp)
             )
         }
