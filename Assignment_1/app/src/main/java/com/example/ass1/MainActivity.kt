@@ -51,7 +51,7 @@ fun NumberPadApp(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(if (isLandscape())40.dp else 60.dp)
                 .background(Color(0xFF0D47A1)),
             contentAlignment = Alignment.Center
         ) {
@@ -65,7 +65,7 @@ fun NumberPadApp(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(70.dp)
+                .height(if (isLandscape()) 50.dp else 70.dp)
                 .background(Color(0xFFBBDEFB)),
             contentAlignment = Alignment.CenterEnd
         ) {
@@ -92,7 +92,7 @@ fun NumberPadApp(modifier: Modifier = Modifier) {
 
             Column(
                 modifier = Modifier
-                    .weight(2f)
+                    .weight(if (isLandscape()) 3f else 2f)
                     .fillMaxHeight()
                     .padding(start = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -119,7 +119,7 @@ fun NumberPadApp(modifier: Modifier = Modifier) {
                                 },
                                 modifier = Modifier
                                     .weight(1f)
-                                    .height(50.dp)
+                                    .height(if(isLandscape()) 40.dp else 50.dp)
                             ) {
                                 Text(label)
                             }
@@ -161,20 +161,33 @@ fun updateLeftPanel(amountStr: String) {
     val change = calculateChange(amount)
     val landscape = isLandscape()
 
-    val denominations = listOf(500, 100, 50, 20, 10, 5, 2, 1)
+    val leftDenominations = listOf(500, 100, 50, 20)
+    val rightDenominations = listOf(10, 5, 2, 1)
 
     if (landscape) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
+        Row(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(denominations) { note ->
-                val count = change[note] ?: 0
-                Text("$note: $count")
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.weight(1f)
+            ) {
+                leftDenominations.forEach { note ->
+                    val count = change[note] ?: 0
+                    Text("$note: $count")
+                }
+            }
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.weight(1f)
+            ) {
+                rightDenominations.forEach { note ->
+                    val count = change[note] ?: 0
+                    Text("$note: $count")
+                }
             }
         }
     } else {
