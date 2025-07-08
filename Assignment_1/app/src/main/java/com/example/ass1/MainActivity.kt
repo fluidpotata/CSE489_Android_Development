@@ -14,7 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
-
+import androidx.compose.ui.platform.LocalConfiguration
+import android.content.res.Configuration
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import com.example.ass1.ui.theme.Ass1Theme
 
 class MainActivity : ComponentActivity() {
@@ -35,7 +39,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun NumberPadApp(modifier: Modifier = Modifier) {
-    var input by remember{ mutableStateOf("") }
+    var input by rememberSaveable{ mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -73,7 +77,13 @@ fun NumberPadApp(modifier: Modifier = Modifier) {
         Row(modifier = Modifier.fillMaxSize()) {
 
 
-            updateLeftPanel(amountStr = input)
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+            ) {
+                updateLeftPanel(amountStr = input)
+            }
 
 
             Column(
@@ -133,23 +143,51 @@ fun calculateChange(amount: Int): Map<Int, Int> {
     return result
 }
 
+
+@Composable
+fun isLandscape(): Boolean {
+    val configuration = LocalConfiguration.current
+    return configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+}
+
+
 @Composable
 fun updateLeftPanel(amountStr: String) {
     val amount = amountStr.toIntOrNull() ?: 0
     val change = calculateChange(amount)
+    val landscape = isLandscape()
 
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(8.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        listOf(500, 100, 50, 20, 10, 5, 2, 1).forEach { note ->
-            val count = change[note] ?: 0
-            Text("$note: $count")
+    val denominations = listOf(500, 100, 50, 20, 10, 5, 2, 1)
+
+    if (landscape) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(denominations) { note ->
+                val count = change[note] ?: 0
+                Text("$note: $count")
+            }
+        }
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            listOf(500, 100, 50, 20, 10, 5, 2, 1).forEach { note ->
+                val count = change[note] ?: 0
+                Text("$note: $count")
+            }
         }
     }
 }
+
 
 
 @Preview(showBackground = true)
