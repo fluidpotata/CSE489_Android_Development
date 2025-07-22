@@ -22,8 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.compose.ui.Alignment
-
-
+import androidx.compose.ui.platform.LocalContext
 
 
 class MainActivity : ComponentActivity() {
@@ -83,6 +82,7 @@ fun MyApp() {
                 composable(ScreenRoutes.Home) { HomeScreen() }
                 composable(ScreenRoutes.Settings) { ImageViewerScreen() }
                 composable(ScreenRoutes.About) { AboutScreen() }
+                composable(ScreenRoutes.Video) { VideoScreen() }
             }
         }
     }
@@ -99,7 +99,7 @@ fun DrawerContent(onItemClicked: (String) -> Unit) {
         DrawerItem("Broadcast Reciever", onClick = { onItemClicked(ScreenRoutes.Home) })
         DrawerItem("Image", onClick = { onItemClicked(ScreenRoutes.Settings) })
         DrawerItem("Video", onClick = { onItemClicked(ScreenRoutes.About) })
-        DrawerItem("Audio", onClick = { onItemClicked(ScreenRoutes.About) })
+        DrawerItem("Audio", onClick = { onItemClicked(ScreenRoutes.Video) })
     }
 }
 
@@ -133,12 +133,18 @@ fun SettingsScreen() {
 
 @Composable
 fun AboutScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("About Screen", style = MaterialTheme.typography.headlineMedium)
-    }
+    val context = LocalContext.current
+    val audioUri = "android.resource://${context.packageName}/raw/mysong"
+
+    AudioPlayerUI(audioUrl = audioUri)
+}
+
+@Composable
+fun VideoScreen() {
+    val context = LocalContext.current
+    val videoUri = "android.resource://${context.packageName}/raw/samplevideo"
+
+    VideoPlayerUI(videoUrl = videoUri)
 }
 
 

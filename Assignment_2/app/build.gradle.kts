@@ -61,5 +61,15 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.2.0")
     implementation("io.coil-kt.coil3:coil-network-ktor2:3.2.0")
     implementation("io.coil-kt.coil3:coil-network-ktor3:3.2.0")
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
+    implementation("androidx.media3:media3-exoplayer:1.2.1")
+    implementation("androidx.media3:media3-ui:1.2.1")
+    implementation("androidx.media3:media3-common:1.2.1")
+    implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.media3:media3-ui:1.3.1")
+
+
+
 }
 
