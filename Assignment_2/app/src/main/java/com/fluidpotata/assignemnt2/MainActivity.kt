@@ -115,8 +115,8 @@ fun DrawerContent(onItemClicked: (String) -> Unit) {
 
         DrawerItem("Broadcast Reciever", onClick = { onItemClicked(ScreenRoutes.Home) })
         DrawerItem("Image", onClick = { onItemClicked(ScreenRoutes.Settings) })
-        DrawerItem("Video", onClick = { onItemClicked(ScreenRoutes.About) })
-        DrawerItem("Audio", onClick = { onItemClicked(ScreenRoutes.Video) })
+        DrawerItem("Video", onClick = { onItemClicked(ScreenRoutes.Video) })
+        DrawerItem("Audio", onClick = { onItemClicked(ScreenRoutes.About) })
     }
 }
 
