@@ -23,6 +23,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.background
+
 
 
 class MainActivity : ComponentActivity() {
@@ -49,18 +51,29 @@ fun MyApp() {
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent { route ->
-                scope.launch {
-                    navController.navigate(route) {
-                        popUpTo(ScreenRoutes.Home)
-                        launchSingleTop = true
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .systemBarsPadding()
+                    .padding(16.dp)
+            ) {
+                DrawerContent { route ->
+                    scope.launch {
+                        navController.navigate(route) {
+                            popUpTo(ScreenRoutes.Home)
+                            launchSingleTop = true
+                        }
+                        drawerState.close()
                     }
-                    drawerState.close()
                 }
             }
         }
     ) {
         Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
             topBar = {
                 TopAppBar(
                     title = { Text("My App") },
@@ -72,12 +85,15 @@ fun MyApp() {
                         }
                     }
                 )
-            }
+            },
+            contentWindowInsets = WindowInsets.systemBars,
         ) { innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = ScreenRoutes.Home,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .systemBarsPadding()
             ) {
                 composable(ScreenRoutes.Home) { HomeScreen() }
                 composable(ScreenRoutes.Settings) { ImageViewerScreen() }
@@ -87,6 +103,7 @@ fun MyApp() {
         }
     }
 }
+
 
 
 @Composable

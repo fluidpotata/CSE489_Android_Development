@@ -26,20 +26,24 @@ import android.widget.Toast
 
 @Composable
 fun HomeScreen() {
-    var selectedOption by remember { mutableStateOf("Battery Info") }
+    var selectedOption by remember { mutableStateOf("Battery") }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        DropDownSelector(onSelect = { selectedOption = it })
+        DropDownSelector(
+            selectedOption = selectedOption,
+            onSelect = { selectedOption = it }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         when (selectedOption) {
             "Battery" -> BatteryInfoDisplay()
             "Custom" -> BroadcastSenderUI()
+            else -> Text("Please select an option")
         }
     }
 }
@@ -47,29 +51,27 @@ fun HomeScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropDownSelector(onSelect: (String) -> Unit){
+fun DropDownSelector(selectedOption: String, onSelect: (String) -> Unit){
     var expanded by remember { mutableStateOf(false) }
     val options = listOf("Battery", "Custom")
-    var selectedOption by remember { mutableStateOf(options[0]) }
 
-    ExposedDropdownMenuBox(expanded=expanded, onExpandedChange = {expanded = !expanded}) {
+    ExposedDropdownMenuBox(expanded=expanded, onExpandedChange = { expanded = !expanded }) {
         TextField(
             value = selectedOption,
             onValueChange = {},
             readOnly = true,
             label = { Text("Choose Option") },
-            trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded=expanded)},
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable, enabled = true)
         )
 
-        ExposedDropdownMenu(expanded=expanded, onDismissRequest = {expanded=false}) {
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             options.forEach { selection ->
                 DropdownMenuItem(
                     text = { Text(selection) },
                     onClick = {
-                        selectedOption = selection
-                        expanded = false
                         onSelect(selection)
+                        expanded = false
                     }
                 )
             }
@@ -107,7 +109,7 @@ fun BatteryInfoDisplay() {
 
 
 fun SendMyBroadcast(context: Context, message: String) {
-    val intent = Intent("com.alif.CUSTOM_BROADCAST")
+    val intent = Intent("com.fluidpotata.CUSTOM_BROADCAST")
     intent.putExtra("message", message)
     context.sendBroadcast(intent)
 }
