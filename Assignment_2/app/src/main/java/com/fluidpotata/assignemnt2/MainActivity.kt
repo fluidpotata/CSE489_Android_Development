@@ -111,15 +111,15 @@ fun DrawerItem(label: String, onClick: () -> Unit) {
 }
 
 
-@Composable
-fun HomeScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Home Screen", style = MaterialTheme.typography.headlineMedium)
-    }
-}
+//@Composable
+//fun HomeScreen() {
+//    Box(
+//        modifier = Modifier.fillMaxSize(),
+//        contentAlignment = Alignment.Center
+//    ) {
+//        Text("Home Screen", style = MaterialTheme.typography.headlineMedium)
+//    }
+//}
 
 @Composable
 fun SettingsScreen() {
