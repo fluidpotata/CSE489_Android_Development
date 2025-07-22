@@ -81,7 +81,7 @@ fun MyApp() {
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable(ScreenRoutes.Home) { HomeScreen() }
-                composable(ScreenRoutes.Settings) { SettingsScreen() }
+                composable(ScreenRoutes.Settings) { ImageViewerScreen() }
                 composable(ScreenRoutes.About) { AboutScreen() }
             }
         }
